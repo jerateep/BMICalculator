@@ -1,0 +1,120 @@
+<html>
+   <head>
+    <title>Firebase BMI</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </head>
+  
+  <body>
+  <div class="mdl-layout mdl-js-layout">
+    <header class="mdl-layout__header mdl-layout__header--scroll">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">VSCode+Firebase+js+material</span>
+        
+      </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Menu</span>
+      <nav class="mdl-navigation">
+       <a class="mdl-navigation__link" href="main.html">Report</a>
+        <a class="mdl-navigation__link" href="logout.html" id="sign-out">Logout</a>
+      </nav>
+    </div>
+    <main class="mdl-layout__content">
+      <div class="page-content" style="padding-top: 60px;" align="center">
+      <!-- Your content goes here -->
+      <h4>BMI</h4>
+      <form>
+      <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <tbody>
+          <tr>
+            <td class="mdl-data-table__cell--non-numeric">Enter Your Name. </td>
+            <td>
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="title" id="Name">
+                <label class="mdl-textfield__label" for="title">Name...</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="mdl-data-table__cell--non-numeric">Wight: </td>
+            <td>
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="title" id="Wight">
+                <label class="mdl-textfield__label" for="title">Wight...</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="mdl-data-table__cell--non-numeric">Hight (Cm.): </td>
+            <td>
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="title" id="Hight">
+                <label class="mdl-textfield__label" for="title">Hight...</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="mdl-data-table__cell--non-numeric">
+              <button id="add-data" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                Save
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </form>
+ <!--Insert JS-->   
+ <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+ <script>
+   // Initialize Firebase
+   var config = {
+     apiKey: "AIzaSyBFzps-TG77pa-MqOWFcq1M8cpj6rXsS7M",
+     authDomain: "test-964ae.firebaseapp.com",
+     databaseURL: "https://test-964ae.firebaseio.com",
+     projectId: "test-964ae",
+     storageBucket: "test-964ae.appspot.com",
+     messagingSenderId: "797008295235"
+   };
+   firebase.initializeApp(config)
+    var database = firebase.database();
+    document.getElementById("add-data").onclick = function(e) {
+      
+      var name = document.getElementById('Name').value;
+      var wight = document.getElementById('Wight').value;
+      var hight = document.getElementById('Hight').value / 100;
+      var bmi = wight / (hight*hight);
+      var rootRef = firebase.database().ref();
+      var storesRef = rootRef.child('app/data/');
+      var newStoreRef = storesRef.push();
+             newStoreRef.set({
+             name: name,
+             wight: wight,
+             hight: hight,
+             bmi : bmi
+         });
+      if(bmi < 18.5)
+      {
+        alert("BMI = "+ bmi.toFixed(2) + " : น้ำหนักน้อยกว่ามาตรฐาน");
+      }   
+      if(bmi >= 18.5 && bmi < 23)
+      {
+        alert("BMI = "+ bmi.toFixed(2) + " : ปกติ");
+      }   
+      if(bmi >= 23 && bmi < 30)
+      {
+        alert("BMI = "+ bmi.toFixed(2) + " : อ้วนระดับ 1");
+      }   
+      if(bmi > 30)
+      {
+        alert("BMI = "+ bmi.toFixed(2) + " : อ้วนระดับ 2");
+      }   
+    }  
+    </script>  
+      </div>
+    </main>
+  </div>
+</body>
+</html>
